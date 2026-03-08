@@ -1,0 +1,25 @@
+- name: install python
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: present
+  loop:
+  - python3 
+  - gcc 
+  - python3-devel
+
+- name: import app-setup
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app-setup.yaml
+
+- name: install dependencie
+  ansible.builtin.pip:
+    requirements: requirements.txt
+    executable: pip3.9
+  args:
+    chdir: /app
+
+- name: import systemd-setup
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: systemd-setup.yaml
